@@ -1,4 +1,4 @@
-# xml-schema
+# hifa xml-schema
 
 [![Build Status]][travis] [![Latest Version]][crates.io] [![Coverage Status]][coveralls]
 
