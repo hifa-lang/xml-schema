@@ -2,12 +2,12 @@
 
 [![Build Status]][travis] [![Latest Version]][crates.io] [![Coverage Status]][coveralls]
 
-[Build Status]: https://travis-ci.org/media-io/xml-schema.svg?branch=master
-[travis]: https://travis-ci.org/media-io/xml-schema
-[Latest Version]: https://img.shields.io/crates/v/xml-schema.svg
-[crates.io]: https://crates.io/crates/xml-schema
-[Coverage Status]: https://coveralls.io/repos/github/media-io/xml-schema/badge.svg?branch=master
-[coveralls]: https://coveralls.io/github/media-io/xml-schema?branch=master
+[Build Status]: https://travis-ci.org/media-io/hifa-xml-schema.svg?branch=master
+[travis]: https://travis-ci.org/media-io/hifa-xml-schema
+[Latest Version]: https://img.shields.io/crates/v/hifa-xml-schema.svg
+[crates.io]: https://crates.io/crates/hifa-xml-schema
+[Coverage Status]: https://coveralls.io/repos/github/media-io/hifa-xml-schema/badge.svg?branch=master
+[coveralls]: https://coveralls.io/github/media-io/hifa-xml-schema?branch=master
 
 Generate rust code (structures and enum) from XSD
 
@@ -17,10 +17,10 @@ This is a modified version of the project in [media-io/xml-schema](https://githu
 
 This project depends to other required libraries to start with, add them to your `Cargo.toml`.
 
-- [YaSerDe derive](https://crates.io/crates/hifa_yaserde_derive)
-- [YaSerDe](https://crates.io/crates/hifa_yaserde)
-- [XML-Schema derive](https://crates.io/crates/xml-schema-derive)
-- [XML-Schema](https://crates.io/crates/xml-schema)
+- [hifa YaSerDe derive](https://crates.io/crates/hifa_yaserde_derive)
+- [hifa YaSerDe](https://crates.io/crates/hifa_yaserde)
+- [hifa XML-Schema derive](https://crates.io/crates/hifa-xml-schema-derive)
+- [hifa XML-Schema](https://crates.io/crates/hifa-xml-schema)
 - [XML-rs](https://crates.io/crates/xml-rs)
 - [log](https://crates.io/crates/log)
 

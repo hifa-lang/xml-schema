@@ -1,9 +1,9 @@
 [package]
-name = "xml-schema"
+name = "hifa-xml-schema"
 version = "0.3.0"
 description = "Structure generator from XSD source file"
 edition = "2018"
-authors = ["Marc-Antoine Arnaud <maarnaud@media-io.com>"]
+authors = ["Marc-Antoine Arnaud <maarnaud@media-io.com>", "hifa-lang"]
 keywords = ["XML", "Schema", "XSD"]
 license = "MIT"
 repository = "https://github.com/media-io/xml-schema"
@@ -13,11 +13,11 @@ readme = "../README.md"
 exclude = ["/tests"]
 
 [dependencies]
-xml-schema-derive = { version = "0.3.0", path = "../xml_schema_derive", optional = true }
+hifa-xml-schema-derive = { version = "0.3.0", path = "../xml_schema_derive", optional = true }
 
 [dev-dependencies]
 log = "0.4"
 xml-rs = "0.8"
-xml-schema-derive = { version = "0.3.0", path = "../xml_schema_derive" }
+hifa-xml-schema-derive = { version = "0.3.0", path = "../xml_schema_derive" }
 hifa_yaserde_derive = { version = "0.9" }
 hifa_yaserde = { version = "0.9" }
