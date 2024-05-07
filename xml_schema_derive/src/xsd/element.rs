@@ -38,13 +38,8 @@ impl Implementation for Element {
       &self.name.replace('.', "_").to_upper_camel_case(),
       Span::call_site(),
     );
-
     let (fields, extra_structs) = if let Some(kind) = &self.kind {
-      let subtype_mode = if RustTypesMapping::is_xs_string(context, kind) {
-        quote!(text)
-      } else {
-        quote!(flatten)
-      };
+      let subtype_mode = RustTypesMapping::subtype_mode(context, kind);
 
       let extern_type = RustTypesMapping::get(context, kind);
 
@@ -59,7 +54,9 @@ impl Implementation for Element {
       let fields_definition = self
         .complex_type
         .iter()
-        .map(|complex_type| complex_type.get_field_implementation(context, prefix))
+        .map(|complex_type| {
+          complex_type.get_field_implementation(namespace_definition, context, prefix)
+        })
         .collect();
 
       (fields_definition, quote!())
@@ -102,14 +99,17 @@ impl Element {
     &self,
     context: &XsdContext,
     prefix: &Option<String>,
+    inheritable_multiple: bool,
+    optional: bool,
   ) -> TokenStream {
     let refers = self.get_refers();
     if self.name.is_empty() && refers.is_none() {
       return quote!();
     }
 
-    let multiple = self.max_occurences.is_some()
-      && self.max_occurences != Some(MaxOccurences::Number { value: 1 });
+    let multiple = inheritable_multiple
+      || (self.max_occurences.is_some()
+        && self.max_occurences != Some(MaxOccurences::Number { value: 1 }));
 
     let name = if self.name.to_lowercase() == "type" {
       "kind".to_string()
@@ -128,7 +128,6 @@ impl Element {
     } else {
       name
     };
-
     let attribute_name = Ident::new(&name, Span::call_site());
     let yaserde_rename = if !self.name.is_empty() {
       &self.name
@@ -143,7 +142,19 @@ impl Element {
     } else if let Some(kind) = &self.kind {
       RustTypesMapping::get(context, kind)
     } else if let Some(refers) = refers {
-      RustTypesMapping::get(context, refers)
+      let module = (!context.is_in_sub_module()
+        && !self
+          .get_refers()
+          .map(|refers| {
+            RustTypesMapping::is_xs_string(context, refers)
+              || RustTypesMapping::is_xs_int(context, refers)
+          })
+          .unwrap_or_default())
+      .then_some(quote!(xml_schema_types::))
+      .unwrap_or_default();
+
+      let rust_type = RustTypesMapping::get(context, refers);
+      quote!( hifa_yaserde :: ext :: Boxed <#module #rust_type>)
     } else {
       panic!(
         "[Element] {:?} unimplemented type: {:?}",
@@ -159,16 +170,21 @@ impl Element {
           RustTypesMapping::is_xs_string(context, kind)
             || RustTypesMapping::is_xs_int(context, kind)
         })
-        .unwrap_or_default())
+        .unwrap_or_default()
+      && !self.get_refers().is_some())
     .then_some(quote!(xml_schema_types::))
     .unwrap_or_default();
 
     let rust_type = if multiple {
-      quote!(Vec<#module#rust_type>)
-    } else if self.min_occurences == Some(0) {
-      quote!(Option<#module#rust_type>)
+      quote!(Vec<#module #rust_type>)
     } else {
-      quote!(#module#rust_type)
+      quote!(#module #rust_type)
+    };
+
+    let rust_type = if optional || (!multiple && self.min_occurences == Some(0)) {
+      quote!(Option<#rust_type>)
+    } else {
+      rust_type
     };
 
     let prefix_attribute = prefix
@@ -295,10 +311,10 @@ mod tests {
       XsdContext::new(r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>"#)
         .unwrap();
 
-    let implementation = element.get_field_implementation(&context, &None);
+    let implementation = element.get_field_implementation(&context, &None, false, false);
 
     let expected = TokenStream::from_str(
-      r#"#[yaserde(rename = "OwnedType")] pub owned_type : xml_schema_types :: OwnedType ,"#,
+      r#"#[yaserde(rename = "OwnedType")] pub owned_type : hifa_yaserde :: ext :: Boxed < xml_schema_types :: OwnedType > ,"#,
     )
     .unwrap();
 
@@ -316,10 +332,10 @@ mod tests {
       annotation: None,
     };
 
-    let implementation = element.get_field_implementation(&context, &None);
+    let implementation = element.get_field_implementation(&context, &None, false, false);
 
     let expected = TokenStream::from_str(
-      r#"#[yaserde(rename = "OwnedType")] pub owned_type_list : Vec < xml_schema_types :: OwnedType > ,"#
+      r#"#[yaserde(rename = "OwnedType")] pub owned_type_list : Vec < hifa_yaserde :: ext :: Boxed < xml_schema_types :: OwnedType > > ,"#
     )
     .unwrap();
 

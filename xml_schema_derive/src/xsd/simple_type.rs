@@ -43,10 +43,10 @@ impl SimpleType {
     context: &XsdContext,
     prefix: &Option<String>,
   ) -> TokenStream {
-    if let Some(restriction) = &self.restriction {
-      restriction.get_type_implementation(context, prefix)
-    } else {
-      panic!("No restriction for this simple type {:?}", self);
+    match (self.restriction.as_ref(), self.list.as_ref()) {
+      (Some(restriction), None) => restriction.get_type_implementation(context, prefix),
+      (None, Some(list)) => list.get_type_implementation(context, prefix),
+      _ => panic!("Not implemented Rust type for: {:?}", self),
     }
   }
 }

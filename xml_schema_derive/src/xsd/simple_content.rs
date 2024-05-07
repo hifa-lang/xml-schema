@@ -24,9 +24,12 @@ impl Implementation for SimpleContent {
 impl SimpleContent {
   pub fn get_field_implementation(
     &self,
+    namespace_definition: &TokenStream,
     context: &XsdContext,
     prefix: &Option<String>,
   ) -> TokenStream {
-    self.extension.get_field_implementation(context, prefix)
+    self
+      .extension
+      .get_field_implementation(namespace_definition, context, prefix)
   }
 }

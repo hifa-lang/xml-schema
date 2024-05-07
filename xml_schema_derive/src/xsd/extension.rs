@@ -1,6 +1,6 @@
 use crate::xsd::{
-  attribute::Attribute, group::Group, rust_types_mapping::RustTypesMapping, sequence::Sequence,
-  Implementation, XsdContext,
+  attribute::Attribute, choice::Choice, group::Group, rust_types_mapping::RustTypesMapping,
+  sequence::Sequence, Implementation, XsdContext,
 };
 use proc_macro2::TokenStream;
 
@@ -19,6 +19,8 @@ pub struct Extension {
   pub sequences: Vec<Sequence>,
   #[yaserde(rename = "group")]
   pub group: Option<Group>,
+  #[yaserde(rename = "choice")]
+  pub choices: Vec<Choice>,
 }
 
 impl Implementation for Extension {
@@ -29,6 +31,13 @@ impl Implementation for Extension {
     context: &XsdContext,
   ) -> TokenStream {
     let rust_type = RustTypesMapping::get(context, &self.base);
+
+    // TODO: implement sequences
+    // let sequences: TokenStream = self
+    //   .sequences
+    //   .iter()
+    //   .map(|sequence| sequence.implement(namespace_definition, prefix, context))
+    //   .collect();
 
     let attributes: TokenStream = self
       .attributes
@@ -53,10 +62,23 @@ impl Implementation for Extension {
 impl Extension {
   pub fn get_field_implementation(
     &self,
+    namespace_definition: &TokenStream,
     context: &XsdContext,
     prefix: &Option<String>,
   ) -> TokenStream {
     let rust_type = RustTypesMapping::get(context, &self.base);
+
+    let sequences: TokenStream = self
+      .sequences
+      .iter()
+      .map(|sequence| sequence.implement(namespace_definition, prefix, context))
+      .collect();
+
+    let attributes: TokenStream = self
+      .attributes
+      .iter()
+      .map(|attribute| attribute.implement(&TokenStream::new(), prefix, context))
+      .collect();
 
     let group_content = self
       .group
@@ -65,16 +87,36 @@ impl Extension {
         let group_type = group.get_type_implementation(context, prefix);
 
         quote!(
-          ,
           #[serde(flatten)]
-          pub extension : #group_type
+          pub extension : #group_type ,
         )
       })
       .unwrap_or_default();
 
+    let subtype_mode = RustTypesMapping::subtype_mode(context, &self.base);
     quote!(
-      pub base : #rust_type
+      #[yaserde(#subtype_mode)]
+      pub base : #rust_type ,
+      #sequences
+      #attributes
       #group_content
+    )
+  }
+
+  pub fn get_sub_type_implementation(
+    &self,
+    namespace_definition: &TokenStream,
+    context: &XsdContext,
+    prefix: &Option<String>,
+  ) -> TokenStream {
+    let sequence_sub_types: TokenStream = self
+      .sequences
+      .iter()
+      .map(|sequence| sequence.get_sub_types_implementation(context, namespace_definition, prefix))
+      .collect();
+
+    quote!(
+      #sequence_sub_types
     )
   }
 }
@@ -91,6 +133,7 @@ mod tests {
       attributes: vec![],
       sequences: vec![],
       group: None,
+      choices: vec![],
     };
 
     let context =
@@ -134,6 +177,7 @@ mod tests {
       ],
       sequences: vec![],
       group: None,
+      choices: vec![],
     };
 
     let context =

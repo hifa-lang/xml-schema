@@ -10,6 +10,7 @@ pub struct ComplexContent {
 impl ComplexContent {
   pub fn get_field_implementation(
     &self,
+    namespace_definition: &TokenStream,
     context: &XsdContext,
     prefix: &Option<String>,
   ) -> TokenStream {
@@ -17,6 +18,19 @@ impl ComplexContent {
       .extension
       .as_ref()
       .unwrap()
-      .get_field_implementation(context, prefix)
+      .get_field_implementation(namespace_definition, context, prefix)
+  }
+
+  pub fn get_sub_type_implementation(
+    &self,
+    namespace_definition: &TokenStream,
+    context: &XsdContext,
+    prefix: &Option<String>,
+  ) -> TokenStream {
+    self
+      .extension
+      .as_ref()
+      .unwrap()
+      .get_sub_type_implementation(namespace_definition, context, prefix)
   }
 }

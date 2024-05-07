@@ -27,6 +27,14 @@ impl RustTypesMapping {
     }
   }
 
+  pub fn subtype_mode(context: &XsdContext, kind: &str) -> TokenStream {
+    if RustTypesMapping::is_xs_string(context, kind) {
+      quote!(text)
+    } else {
+      quote!(flatten)
+    }
+  }
+
   pub fn is_xs_string(context: &XsdContext, kind: &str) -> bool {
     let items: Vec<&str> = kind.split(':').collect();
 

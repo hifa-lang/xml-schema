@@ -69,7 +69,12 @@ impl Implementation for Attribute {
       (_, _, _) => panic!("Not implemented Rust type for: {:?}", self),
     };
 
-    let rust_type = if self.required == Required::Optional {
+    let required = match self.simple_type.as_ref() {
+      Some(SimpleType { list: Some(_), .. }) => true,
+      _ => false,
+    };
+
+    let rust_type = if !required && self.required == Required::Optional {
       quote!(Option<#rust_type>)
     } else {
       quote!(#rust_type)
@@ -80,6 +85,12 @@ impl Implementation for Attribute {
     } else {
       quote!(attribute, rename=#raw_name)
     };
+
+    // TODO: add support for default and fixed attributes
+    // let prefix_attribute = prefix
+    //   .as_ref()
+    //   .map(|prefix| quote!(, prefix=#prefix))
+    //   .unwrap_or_default();
 
     quote!(
       #[yaserde(#attributes)]
