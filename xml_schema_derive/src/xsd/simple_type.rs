@@ -27,7 +27,7 @@ impl Implementation for SimpleType {
     }
 
     quote!(
-      #[derive(Clone, Debug, Default, PartialEq, yaserde_derive::YaDeserialize, yaserde_derive::YaSerialize)]
+      #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
       #namespace_definition
       pub struct #struct_name {
         #[yaserde(text)]
@@ -57,7 +57,7 @@ mod tests {
   use std::str::FromStr;
 
   static DERIVES: &str =
-    "# [derive (Clone , Debug , Default , PartialEq , yaserde_derive :: YaDeserialize , yaserde_derive :: YaSerialize)] ";
+    "# [derive (Clone , Debug , Default , PartialEq , hifa_yaserde_derive :: YaDeserialize , hifa_yaserde_derive :: YaSerialize)] ";
 
   #[test]
   fn simple_type() {

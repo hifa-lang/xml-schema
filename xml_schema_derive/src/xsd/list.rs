@@ -24,8 +24,8 @@ impl Implementation for List {
         pub items: Vec<#list_type>
       }
 
-      impl yaserde::YaDeserialize for #struct_name {
-        fn deserialize<R: std::io::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
+      impl hifa_yaserde::YaDeserialize for #struct_name {
+        fn deserialize<R: std::io::Read>(reader: &mut hifa_yaserde::de::Deserializer<R>) -> Result<Self, String> {
           loop {
             match reader.next_event()? {
               xml::reader::XmlEvent::StartElement{..} => {}
@@ -47,8 +47,8 @@ impl Implementation for List {
         }
       }
 
-      impl yaserde::YaSerialize for #struct_name {
-        fn serialize<W: std::io::Write>(&self, writer: &mut yaserde::ser::Serializer<W>) -> Result<(), String> {
+      impl hifa_yaserde::YaSerialize for #struct_name {
+        fn serialize<W: std::io::Write>(&self, writer: &mut hifa_yaserde::ser::Serializer<W>) -> Result<(), String> {
           let content =
             self.items.iter().map(|item| item.to_string()).collect::<Vec<String>>().join(" ");
 
@@ -95,8 +95,8 @@ mod tests {
           pub items: Vec <String>
         }
 
-        impl yaserde::YaDeserialize for Parent {
-          fn deserialize<R: std::io::Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
+        impl hifa_yaserde::YaDeserialize for Parent {
+          fn deserialize<R: std::io::Read>(reader: &mut hifa_yaserde::de::Deserializer<R>) -> Result<Self, String> {
             loop {
               match reader.next_event()? {
                 xml::reader::XmlEvent::StartElement{..} => { }
@@ -116,8 +116,8 @@ mod tests {
           }
         }
 
-        impl yaserde::YaSerialize for Parent {
-          fn serialize<W: std::io::Write> (&self, writer: &mut yaserde::ser::Serializer<W>) -> Result<(), String> {
+        impl hifa_yaserde::YaSerialize for Parent {
+          fn serialize<W: std::io::Write> (&self, writer: &mut hifa_yaserde::ser::Serializer<W>) -> Result<(), String> {
             let content = self
               .items
               .iter()

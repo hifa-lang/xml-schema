@@ -1,6 +1,6 @@
+use hifa_yaserde::YaDeserialize;
 use std::io::Read;
 use xml::reader::XmlEvent;
-use yaserde::YaDeserialize;
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub enum MaxOccurences {
@@ -12,7 +12,7 @@ pub enum MaxOccurences {
 }
 
 impl YaDeserialize for MaxOccurences {
-  fn deserialize<R: Read>(reader: &mut yaserde::de::Deserializer<R>) -> Result<Self, String> {
+  fn deserialize<R: Read>(reader: &mut hifa_yaserde::de::Deserializer<R>) -> Result<Self, String> {
     if let XmlEvent::StartElement { name, .. } = reader.peek()? {
       if name.local_name != "MaxOccurences" {
         return Err("Unable to parse Max Occurences field".to_string());

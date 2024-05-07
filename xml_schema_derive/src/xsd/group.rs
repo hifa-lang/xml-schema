@@ -64,7 +64,7 @@ impl Group {
 mod tests {
   use super::*;
 
-  use yaserde::de::from_str;
+  use hifa_yaserde::de::from_str;
 
   #[test]
   fn check_group_implementation() {

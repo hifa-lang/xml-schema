@@ -73,7 +73,7 @@ impl Implementation for Element {
 
     quote! {
       #docs
-      #[derive(Clone, Debug, Default, PartialEq, yaserde_derive::YaDeserialize, yaserde_derive::YaSerialize)]
+      #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
       #namespace_definition
       pub struct #struct_name {
         #fields
@@ -178,7 +178,7 @@ mod tests {
   use std::str::FromStr;
 
   static DERIVES: &str =
-    "#[derive(Clone, Debug, Default, PartialEq, yaserde_derive::YaDeserialize, yaserde_derive::YaSerialize)]";
+    "#[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]";
 
   static DOCS: &str = r#"#[doc = "Loudness measured in Decibels"]"#;
 

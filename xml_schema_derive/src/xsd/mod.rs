@@ -20,12 +20,12 @@ mod union;
 mod xsd_context;
 
 use heck::ToSnakeCase;
+use hifa_yaserde::de::from_str;
 use proc_macro2::{Ident, TokenStream};
 use std::collections::BTreeMap;
 use std::fs;
 use syn::Visibility;
 use xsd_context::XsdContext;
-use yaserde::de::from_str;
 
 trait Implementation {
   fn implement(

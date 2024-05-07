@@ -1,6 +1,6 @@
+use hifa_yaserde::de::from_str;
+use hifa_yaserde::ser::to_string;
 use xml_schema_derive::XmlSchema;
-use yaserde::de::from_str;
-use yaserde::ser::to_string;
 
 #[test]
 fn complex_type_string() {

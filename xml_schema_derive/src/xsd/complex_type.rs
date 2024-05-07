@@ -84,7 +84,7 @@ impl Implementation for ComplexType {
     quote! {
       #docs
 
-      #[derive(Clone, Debug, Default, PartialEq, yaserde_derive::YaDeserialize, yaserde_derive::YaSerialize)]
+      #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
       #namespace_definition
       pub struct #struct_name {
         #sequence
