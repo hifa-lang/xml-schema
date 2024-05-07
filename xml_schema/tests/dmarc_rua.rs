@@ -1,5 +1,5 @@
+use hifa_xml_schema_derive::XmlSchema;
 use hifa_yaserde::de::from_str;
-use xml_schema_derive::XmlSchema;
 
 #[test]
 fn dmarc_rua_string() {

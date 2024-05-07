@@ -33,7 +33,7 @@ In the entrypoint of your rust project, add these folowing lines:
 extern crate hifa_yaserde_derive;
 
 use std::io::prelude::*;
-use xml_schema_derive::XmlSchema;
+use hifa_xml_schema_derive::XmlSchema;
 use hifa_yaserde::{YaDeserialize, YaSerialize};
 ```
 

@@ -12,7 +12,7 @@ documentation = "https://docs.rs/xml_schema"
 readme = "../README.md"
 
 [lib]
-name = "xml_schema_derive"
+name = "hifa_xml_schema_derive"
 proc-macro = true
 
 [features]
