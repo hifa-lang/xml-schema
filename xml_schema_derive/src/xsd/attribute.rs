@@ -47,14 +47,9 @@ impl Implementation for Attribute {
     if self.name.is_none() {
       return quote!();
     }
-    let raw_name = self.name.clone().unwrap();
-    let name = raw_name.to_snake_case();
 
-    let name = if name == "type" {
-      "kind".to_string()
-    } else {
-      name
-    };
+    let raw_name = self.get_raw_name().unwrap();
+    let name = self.get_name().unwrap();
 
     let field_name = Ident::new(&name, Span::call_site());
 
@@ -96,6 +91,60 @@ impl Implementation for Attribute {
       #[yaserde(#attributes)]
       pub #field_name: #rust_type,
     )
+  }
+}
+
+impl Attribute {
+  pub fn get_sub_type_implementation(
+    &self,
+    namespace_definition: &TokenStream,
+    context: &XsdContext,
+    prefix: &Option<String>,
+  ) -> TokenStream {
+    let simple_types: TokenStream = {
+      let mut context = context.clone();
+      context.set_is_in_sub_module(true);
+
+      self
+        .simple_type
+        .iter()
+        .map(|simple_type| {
+          if simple_type.name.is_empty() {
+            let mut simple_type = simple_type.clone();
+            simple_type.name = self.get_name().unwrap_or_default();
+            simple_type.implement(&namespace_definition, prefix, &context)
+          } else {
+            simple_type.implement(&namespace_definition, prefix, &context)
+          }
+        })
+        .collect()
+    };
+
+    quote! {
+      #simple_types
+    }
+  }
+
+  fn get_name(&self) -> Option<String> {
+    if let Some(raw_name) = self.name.as_ref() {
+      let name = raw_name.to_snake_case();
+
+      if name == "type" {
+        Some("kind".to_string())
+      } else {
+        Some(name)
+      }
+    } else {
+      None
+    }
+  }
+
+  fn get_raw_name(&self) -> Option<String> {
+    if let Some(name) = &self.name {
+      Some(name.clone())
+    } else {
+      None
+    }
   }
 }
 

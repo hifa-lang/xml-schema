@@ -109,6 +109,12 @@ impl Extension {
     context: &XsdContext,
     prefix: &Option<String>,
   ) -> TokenStream {
+    let attributes_sub_types: TokenStream = self
+      .attributes
+      .iter()
+      .map(|attribute| attribute.get_sub_type_implementation(namespace_definition, context, prefix))
+      .collect();
+
     let sequence_sub_types: TokenStream = self
       .sequences
       .iter()
@@ -116,6 +122,7 @@ impl Extension {
       .collect();
 
     quote!(
+      #attributes_sub_types
       #sequence_sub_types
     )
   }
