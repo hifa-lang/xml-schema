@@ -1,6 +1,6 @@
 [package]
 name = "hifa-xml-schema-derive"
-version = "0.3.4"
+version = "0.3.5"
 description = "Structure generator from XSD source file"
 edition = "2018"
 authors = ["Marc-Antoine Arnaud <maarnaud@media-io.com>", "hifa-lang"]
