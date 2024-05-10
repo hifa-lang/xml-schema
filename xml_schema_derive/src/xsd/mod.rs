@@ -90,10 +90,10 @@ impl Xsd {
         .text()
         .map_err(|e| e.to_string())?
     } else {
-      let path = std::env::current_dir().unwrap();
+      let mut path = std::env::current_dir().unwrap();
       log::info!("The current directory is {}", path.display());
-
-      fs::read_to_string(source).map_err(|e| e.to_string())?
+      path.push(source);
+      fs::read_to_string(path).map_err(|e| e.to_string())?
     };
 
     // skip BOM header, can be present on some files
