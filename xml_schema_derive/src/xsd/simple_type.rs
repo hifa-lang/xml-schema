@@ -26,14 +26,11 @@ impl Implementation for SimpleType {
       return list.implement_childs(namespace_definition, prefix, context, &struct_name);
     }
 
-    quote!(
-      #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
-      #namespace_definition
-      pub struct #struct_name {
-        #[yaserde(text)]
-        pub content: std::string::String,
-      }
-    )
+    if let Some(restriction) = &self.restriction {
+      return restriction.implement_childs(namespace_definition, prefix, context, &struct_name);
+    }
+
+    unimplemented!("unimplemented SimpleType: {:?}", self);
   }
 }
 
