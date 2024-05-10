@@ -69,13 +69,12 @@ impl Implementation for List {
 impl List {
   pub fn get_type_implementation(
     &self,
-    context: &XsdContext,
+    _context: &XsdContext,
     _prefix: &Option<String>,
+    struct_name: &Ident,
   ) -> TokenStream {
-    let list_type = RustTypesMapping::get(context, &self.item_type);
-
     quote! {
-      Vec<#list_type>
+      #struct_name
     }
   }
 }

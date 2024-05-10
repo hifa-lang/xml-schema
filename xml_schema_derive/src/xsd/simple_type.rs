@@ -39,10 +39,15 @@ impl SimpleType {
     &self,
     context: &XsdContext,
     prefix: &Option<String>,
+    struct_name: Option<&Ident>,
   ) -> TokenStream {
     match (self.restriction.as_ref(), self.list.as_ref()) {
       (Some(restriction), None) => restriction.get_type_implementation(context, prefix),
-      (None, Some(list)) => list.get_type_implementation(context, prefix),
+      (None, Some(list)) => list.get_type_implementation(
+        context,
+        prefix,
+        struct_name.expect("List type should have a name"),
+      ),
       _ => panic!("Not implemented Rust type for: {:?}", self),
     }
   }

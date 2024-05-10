@@ -1,7 +1,7 @@
 use crate::xsd::{
   rust_types_mapping::RustTypesMapping, simple_type::SimpleType, Implementation, XsdContext,
 };
-use heck::ToSnakeCase;
+use heck::{ToSnakeCase, ToUpperCamelCase};
 use proc_macro2::{Span, TokenStream};
 use syn::Ident;
 
@@ -60,7 +60,15 @@ impl Implementation for Attribute {
     ) {
       (None, Some(kind), None) => RustTypesMapping::get(context, kind),
       (Some(reference), None, None) => RustTypesMapping::get(context, reference),
-      (None, None, Some(simple_type)) => simple_type.get_type_implementation(context, prefix),
+      (None, None, Some(simple_type)) => {
+        let struct_name: Option<Ident> = if let Some(name) = self.name.as_ref() {
+          Some(Ident::new(&name.to_upper_camel_case(), Span::call_site()))
+        } else {
+          None
+        };
+
+        simple_type.get_type_implementation(context, prefix, struct_name.as_ref())
+      }
       (_, _, _) => panic!("Not implemented Rust type for: {:?}", self),
     };
 

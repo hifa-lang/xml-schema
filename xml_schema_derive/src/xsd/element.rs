@@ -138,7 +138,7 @@ impl Element {
     let rust_type = if let Some(complex_type) = &self.complex_type {
       complex_type.get_integrated_implementation(&self.name)
     } else if let Some(simple_type) = &self.simple_type {
-      simple_type.get_type_implementation(context, &Some(self.name.to_owned()))
+      simple_type.get_type_implementation(context, &Some(self.name.to_owned()), None)
     } else if let Some(kind) = &self.kind {
       RustTypesMapping::get(context, kind)
     } else if let Some(refers) = refers {
