@@ -80,6 +80,12 @@ impl Extension {
       .map(|attribute| attribute.implement(&TokenStream::new(), prefix, context))
       .collect();
 
+    let choices: TokenStream = self
+      .choices
+      .iter()
+      .map(|choice| choice.get_field_implementation(context, prefix))
+      .collect();
+
     let group_content = self
       .group
       .as_ref()
@@ -99,6 +105,7 @@ impl Extension {
       pub base : #rust_type ,
       #sequences
       #attributes
+      #choices
       #group_content
     )
   }
