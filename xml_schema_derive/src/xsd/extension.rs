@@ -95,7 +95,7 @@ impl Extension {
         let group_type = group.get_type_implementation(context, prefix);
 
         quote!(
-          #[serde(flatten)]
+          #[yaserde(flatten = true)]
           pub extension : #group_type ,
         )
       })

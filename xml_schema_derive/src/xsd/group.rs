@@ -87,7 +87,7 @@ mod tests {
 
     let implementation = format!("{}", group.implement(&TokenStream::new(), &None, &context));
 
-    assert_eq!(implementation, "# [derive (Clone , Debug , Default , PartialEq , serde :: Deserialize , serde :: Serialize)] \
+    assert_eq!(implementation, "# [derive (Clone , Debug , Default , PartialEq , yaserde_derive :: YaDeserialize , yaserde_derive :: YaSerialize)] \
 pub struct Groupthing { \
 # [yaserde (rename = \"CX_X\")] pub cx_x : xml_schema_types :: Asdfg , \
 # [yaserde (rename = \"CY_X\")] pub cy_x : xml_schema_types :: Asdfg , }");

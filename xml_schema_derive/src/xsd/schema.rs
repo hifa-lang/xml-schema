@@ -112,7 +112,7 @@ fn generate_namespace_definition(
       "a prefix attribute, but no target namespace is defined, please remove the prefix parameter"
     ),
     (Some(prefix), Some(target_namespace)) => {
-      quote!(#[yaserde(prefix=#prefix, namespace = { #prefix = #target_namespace })])
+      quote!(#[yaserde(prefix=#prefix, namespaces = { #prefix = #target_namespace })])
     }
   }
 }
@@ -171,7 +171,7 @@ mod tests {
 
     assert_eq!(
       implementation,
-      r#"# [yaserde (prefix = "prefix" , namespace = { "prefix" = "http://example.com" })]"#
+      r#"# [yaserde (prefix = "prefix" , namespaces = { "prefix" = "http://example.com" })]"#
     );
   }
 }

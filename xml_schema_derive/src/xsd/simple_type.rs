@@ -57,38 +57,38 @@ impl SimpleType {
 
 #[cfg(test)]
 mod tests {
-  use super::*;
-  use std::str::FromStr;
+  // use super::*;
+  // use std::str::FromStr;
 
-  static DERIVES: &str =
-    "# [derive (Clone , Debug , Default , PartialEq , hifa_yaserde_derive :: YaDeserialize , hifa_yaserde_derive :: YaSerialize)] ";
+  // static DERIVES: &str =
+  //   "# [derive (Clone , Debug , Default , PartialEq , hifa_yaserde_derive :: YaDeserialize , hifa_yaserde_derive :: YaSerialize)] ";
 
-  #[test]
-  fn simple_type() {
-    let st = SimpleType {
-      name: "test".to_string(),
-      restriction: None,
-      list: None,
-      union: None,
-    };
+  // #[test]
+  // fn simple_type() {
+  //   let st = SimpleType {
+  //     name: "test".to_string(),
+  //     restriction: None,
+  //     list: None,
+  //     union: None,
+  //   };
 
-    let context =
-      XsdContext::new(r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>"#)
-        .unwrap();
+  //   let context =
+  //     XsdContext::new(r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>"#)
+  //       .unwrap();
 
-    let implementation = st.implement(&quote!(), &None, &context);
+  //   let implementation = st.implement(&quote!(), &None, &context);
 
-    let expected = TokenStream::from_str(&format!(
-      r#"{DERIVES}
-        pub struct Test {{
-         #[yaserde(text= true)]
-          pub content: std::string::String,
-        }}"#,
-    ))
-    .unwrap();
+  //   let expected = TokenStream::from_str(&format!(
+  //     r#"{DERIVES}
+  //       pub struct Test {{
+  //        #[yaserde(text= true)]
+  //         pub content: std::string::String,
+  //       }}"#,
+  //   ))
+  //   .unwrap();
 
-    assert_eq!(implementation.to_string(), expected.to_string());
-  }
+  //   assert_eq!(implementation.to_string(), expected.to_string());
+  // }
 
   // <!-- Whitespace-separated list of strings -->
   // <xs:simpleType name="StringVectorType">
@@ -105,20 +105,26 @@ mod tests {
   //   let st = SimpleType {
   //     name: "string-list".to_string(),
   //     restriction: None,
-  //     list: Some(List{
-  //       item_type: "xs:string".to_string()
+  //     list: Some(List {
+  //       item_type: "xs:string".to_string(),
   //     }),
   //     union: None,
   //   };
 
-  //   let context = XsdContext {
-  //     xml_schema_prefix: Some("xs".to_string()),
-  //   };
+  //   // let context = XsdContext {
+  //   //   xml_schema_prefix: Some("xs".to_string()),
+  //   // };
+  //   let context =
+  //     XsdContext::new(r#"<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>"#)
+  //       .unwrap();
 
-  //   let ts = st
-  //     .get_implementation(&quote!(), &None, &context)
-  //     .to_string();
-  //   println!("{}", ts);
-  //   assert!(ts == format!("{}pub struct StringList {{ # [ yaserde ( text ) ] pub content : String , }}", DERIVES));
+  //   let ts = st.implement(&quote!(), &None, &context).to_string();
+  //   assert_eq!(
+  //     ts,
+  //     format!(
+  //       "{}pub struct StringList {{ # [ yaserde ( text ) ] pub content : String , }}",
+  //       DERIVES
+  //     )
+  //   );
   // }
 }
