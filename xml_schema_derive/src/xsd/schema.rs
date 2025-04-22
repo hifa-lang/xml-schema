@@ -6,16 +6,18 @@ use proc_macro2::TokenStream;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-  root="schema"
-  prefix="xs",
-  namespace="xs: http://www.w3.org/2001/XMLSchema",
+  rename = "schema",
+  prefix = "xs",
+  namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
 )]
 pub struct Schema {
-  #[yaserde(rename = "targetNamespace", attribute)]
+  #[yaserde(rename = "targetNamespace", attribute = true)]
   pub target_namespace: Option<String>,
-  #[yaserde(rename = "elementFormDefault", attribute)]
+  #[yaserde(rename = "elementFormDefault", attribute = true)]
   pub element_form_default: Option<qualification::Qualification>,
-  #[yaserde(rename = "attributeFormDefault", attribute)]
+  #[yaserde(rename = "attributeFormDefault", attribute = true)]
   pub attribute_form_default: Option<qualification::Qualification>,
   #[yaserde(rename = "import")]
   pub imports: Vec<import::Import>,
@@ -110,8 +112,7 @@ fn generate_namespace_definition(
       "a prefix attribute, but no target namespace is defined, please remove the prefix parameter"
     ),
     (Some(prefix), Some(target_namespace)) => {
-      let namespace = format!("{prefix}: {target_namespace}");
-      quote!(#[yaserde(prefix=#prefix, namespace=#namespace)])
+      quote!(#[yaserde(prefix=#prefix, namespace = { #prefix = #target_namespace })])
     }
   }
 }
@@ -170,7 +171,7 @@ mod tests {
 
     assert_eq!(
       implementation,
-      r#"# [yaserde (prefix = "prefix" , namespace = "prefix: http://example.com")]"#
+      r#"# [yaserde (prefix = "prefix" , namespace = { "prefix" = "http://example.com" })]"#
     );
   }
 }

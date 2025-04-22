@@ -6,12 +6,14 @@ use proc_macro2::TokenStream;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-  root = "extension",
+  rename = "extension",
   prefix = "xs",
-  namespace = "xs: http://www.w3.org/2001/XMLSchema"
+  namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
 )]
 pub struct Extension {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub base: String,
   #[yaserde(rename = "attribute")]
   pub attributes: Vec<Attribute>,
@@ -46,7 +48,7 @@ impl Implementation for Extension {
       .collect();
 
     let inner_attribute = if format!("{rust_type}") == "String" {
-      quote!(#[yaserde(text)])
+      quote!(#[yaserde(text = true)])
     } else {
       TokenStream::new()
     };
@@ -158,7 +160,7 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(text)]
+       #[yaserde(text= true)]
         pub base: String,
       "#,
     )
@@ -202,11 +204,11 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(text)]
+       #[yaserde(text= true)]
         pub base: String,
-        #[yaserde(attribute)]
+       #[yaserde(attribute = true)]
         pub attribute_1: String,
-        #[yaserde(attribute)]
+       #[yaserde(attribute = true)]
         pub attribute_2: Option<bool> ,
       "#,
     )

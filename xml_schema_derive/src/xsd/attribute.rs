@@ -9,20 +9,22 @@ use syn::Ident;
 #[yaserde(
   rename = "attribute",
   prefix = "xs",
-  namespace = "xs: http://www.w3.org/2001/XMLSchema"
+  namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
 )]
 pub struct Attribute {
-  #[yaserde(prefix = "xs", attribute)]
+  #[yaserde(prefix = "xs", attribute = true)]
   pub name: Option<String>,
-  #[yaserde(rename = "type", attribute)]
+  #[yaserde(rename = "type", attribute = true)]
   pub kind: Option<String>,
-  // #[yaserde(attribute)]
+  //#[yaserde(attribute = true)]
   // pub default: Option<String>,
-  // #[yaserde(attribute)]
+  //#[yaserde(attribute = true)]
   // pub fixed: Option<String>,
-  #[yaserde(rename = "use", attribute)]
+  #[yaserde(rename = "use", attribute = true)]
   pub required: Required,
-  #[yaserde(rename = "ref", attribute)]
+  #[yaserde(rename = "ref", attribute = true)]
   pub reference: Option<String>,
   #[yaserde(rename = "simpleType")]
   pub simple_type: Option<SimpleType>,
@@ -84,9 +86,9 @@ impl Implementation for Attribute {
     };
 
     let attributes = if name == raw_name {
-      quote!(attribute)
+      quote!(attribute = true)
     } else {
-      quote!(attribute, rename=#raw_name)
+      quote!(attribute = true, rename=#raw_name)
     };
 
     // TODO: add support for default and fixed attributes
@@ -184,7 +186,7 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(attribute)]
+       #[yaserde(attribute = true)]
         pub language: String,
       "#,
     )
@@ -211,7 +213,7 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(attribute)]
+       #[yaserde(attribute = true)]
         pub language: Option<String> ,
       "#,
     )
@@ -238,7 +240,7 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(attribute, rename="type")]
+        #[yaserde(attribute = true, rename="type")]
         pub kind: Option<String> ,
       "#,
     )
@@ -265,7 +267,7 @@ mod tests {
 
     let expected = TokenStream::from_str(
       r#"
-        #[yaserde(attribute, rename="type")]
+        #[yaserde(attribute = true, rename="type")]
         pub kind: Option<MyType> ,
       "#,
     )

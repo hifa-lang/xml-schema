@@ -7,17 +7,19 @@ use proc_macro2::{Span, TokenStream};
 use syn::Ident;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
-#[yaserde(prefix = "xs", namespace = "xs: http://www.w3.org/2001/XMLSchema")]
+#[yaserde(prefix = "xs", namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  })]
 pub struct Element {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub name: String,
-  #[yaserde(rename = "type", attribute)]
+  #[yaserde(rename = "type", attribute = true)]
   pub kind: Option<String>,
-  #[yaserde(rename = "ref", attribute)]
+  #[yaserde(rename = "ref", attribute = true)]
   pub refers: Option<String>,
-  #[yaserde(rename = "minOccurs", attribute)]
+  #[yaserde(rename = "minOccurs", attribute = true)]
   pub min_occurences: Option<u64>,
-  #[yaserde(rename = "maxOccurs", attribute)]
+  #[yaserde(rename = "maxOccurs", attribute = true)]
   pub max_occurences: Option<MaxOccurences>,
   #[yaserde(rename = "complexType")]
   pub complex_type: Option<ComplexType>,
@@ -247,7 +249,7 @@ mod tests {
         {DOCS}
         {DERIVES}
         pub struct Volume {{
-          #[yaserde(flatten)]
+          #[yaserde(flatten = true)]
           pub content: xml_schema_types::VolumeType,
         }}"#
     ))
@@ -284,7 +286,7 @@ mod tests {
         {DOCS}
         {DERIVES}
         pub struct Volume {{
-          #[yaserde(text)]
+         #[yaserde(text= true)]
           pub content: xml_schema_types::String,
         }}"#
     ))

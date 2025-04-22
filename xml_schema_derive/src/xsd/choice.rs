@@ -6,18 +6,20 @@ use proc_macro2::TokenStream;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-    rename = "choice"
+    rename = "choice",
     prefix = "xs",
-    namespace = "xs: http://www.w3.org/2001/XMLSchema"
+    namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
   )]
 pub struct Choice {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub id: Option<String>,
   #[yaserde(rename = "attribute")]
   pub attributes: Vec<Attribute>,
-  #[yaserde(rename = "minOccurs", attribute)]
+  #[yaserde(rename = "minOccurs", attribute = true)]
   pub min_occurences: Option<u64>,
-  #[yaserde(rename = "maxOccurs", attribute)]
+  #[yaserde(rename = "maxOccurs", attribute = true)]
   pub max_occurences: Option<MaxOccurences>,
   #[yaserde(rename = "annotation")]
   pub annotation: Option<Annotation>,

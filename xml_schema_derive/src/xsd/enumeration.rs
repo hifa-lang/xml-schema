@@ -1,6 +1,8 @@
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
-#[yaserde(prefix = "xs", namespace = "xs: http://www.w3.org/2001/XMLSchema")]
+#[yaserde(prefix = "xs", namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  })]
 pub struct Enumeration {
-  #[yaserde(attribute)]
+ #[yaserde(attribute = true)]
   pub value: String,
 }

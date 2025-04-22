@@ -3,19 +3,23 @@ use proc_macro2::TokenStream;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-    rename = "annotation"
+    rename = "annotation",
     prefix = "xs",
-    namespace = "xs: http://www.w3.org/2001/XMLSchema"
+    namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
   )]
 pub struct Annotation {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub id: Option<String>,
   #[yaserde(rename = "attribute")]
   pub attributes: Vec<Attribute>,
   #[yaserde(
-      rename = "documentation"
+      rename = "documentation",
       prefix = "xs",
-      namespace = "xs: http://www.w3.org/2001/XMLSchema"
+      namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
     )]
   pub documentation: Vec<String>,
 }

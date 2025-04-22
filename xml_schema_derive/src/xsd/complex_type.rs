@@ -8,12 +8,14 @@ use syn::Ident;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-  rename = "complexType"
+  rename = "complexType",
   prefix = "xs",
-  namespace = "xs: http://www.w3.org/2001/XMLSchema"
+  namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
 )]
 pub struct ComplexType {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub name: String,
   #[yaserde(rename = "attribute")]
   pub attributes: Vec<Attribute>,

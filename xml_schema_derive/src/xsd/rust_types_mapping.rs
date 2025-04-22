@@ -31,7 +31,7 @@ impl RustTypesMapping {
     if RustTypesMapping::is_xs_string(context, kind) {
       quote!(text)
     } else {
-      quote!(flatten)
+      quote!(flatten = true)
     }
   }
 

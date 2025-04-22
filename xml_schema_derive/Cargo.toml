@@ -23,10 +23,14 @@ darling = "0.20.3"
 heck = "0.4"
 log = "0.4"
 proc-macro2 = "1.0"
-quote = "1.0"
-reqwest = { version = "0.11", default-features = false, features = ["blocking"] }
+quote = "~1.0"
+reqwest = { version = "0.11", default-features = false, features = [
+    "blocking",
+] }
 simple_logger = "4"
 syn = { version = "2.0", features = ["visit", "extra-traits"] }
 xml-rs = "0.8"
-hifa_yaserde_derive = { version = "0.9.3" }
-hifa_yaserde = { version = "0.9.3" }
+# hifa_yaserde_derive = { version = "0.9.3" }
+hifa_yaserde_derive = { version = "0.9.3", path = "../../yaserde/yaserde_derive" }
+# hifa_yaserde = { version = "0.9.3" }
+hifa_yaserde = { version = "0.9.3", path = "../../yaserde/yaserde" }

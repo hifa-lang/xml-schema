@@ -4,9 +4,11 @@ use proc_macro2::{Span, TokenStream};
 use syn::Ident;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
-#[yaserde(prefix = "xs", namespace = "xs: http://www.w3.org/2001/XMLSchema")]
+#[yaserde(prefix = "xs", namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  })]
 pub struct SimpleType {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub name: String,
   pub restriction: Option<Restriction>,
   pub list: Option<List>,
@@ -79,7 +81,7 @@ mod tests {
     let expected = TokenStream::from_str(&format!(
       r#"{DERIVES}
         pub struct Test {{
-          #[yaserde(text)]
+         #[yaserde(text= true)]
           pub content: std::string::String,
         }}"#,
     ))

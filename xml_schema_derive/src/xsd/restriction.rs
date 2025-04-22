@@ -6,9 +6,11 @@ use proc_macro2::TokenStream;
 use super::Implementation;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
-#[yaserde(prefix = "xs", namespace = "xs: http://www.w3.org/2001/XMLSchema")]
+#[yaserde(prefix = "xs", namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  })]
 pub struct Restriction {
-  #[yaserde(rename = "base", attribute)]
+  #[yaserde(rename = "base", attribute = true)]
   pub base: Option<String>,
   #[yaserde(rename = "enumeration")]
   pub enumerations: Vec<Enumeration>,
@@ -69,7 +71,7 @@ impl Implementation for Restriction {
             #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
             #namespace_definition
             pub struct #struct_name {
-              #[yaserde(text)]
+             #[yaserde(text= true)]
               pub content: std::string::String,
             }
           );
@@ -98,7 +100,7 @@ impl Restriction {
   //   #[derive(Clone, Debug, Default, PartialEq, hifa_yaserde_derive::YaDeserialize, hifa_yaserde_derive::YaSerialize)]
   //   #namespace_definition
   //   pub struct #struct_name {
-  //     #[yaserde(text)]
+  //    #[yaserde(text= true)]
   //     pub content: std::string::String,
   //   }
   // )

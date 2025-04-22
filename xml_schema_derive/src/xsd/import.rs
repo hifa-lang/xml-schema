@@ -1,14 +1,16 @@
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
 #[yaserde(
-  root="schema"
-  prefix="xs",
-  namespace="xs: http://www.w3.org/2001/XMLSchema",
+  rename = "schema",
+  prefix = "xs",
+  namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  }
 )]
 pub struct Import {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub id: Option<String>,
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub namespace: Option<String>,
-  #[yaserde(rename = "schemaLocation", attribute)]
+  #[yaserde(rename = "schemaLocation", attribute = true)]
   pub schema_location: Option<String>,
 }

@@ -6,11 +6,13 @@ use proc_macro2::{Span, TokenStream};
 use syn::Ident;
 
 #[derive(Clone, Default, Debug, PartialEq, YaDeserialize)]
-#[yaserde(prefix = "xs", namespace = "xs: http://www.w3.org/2001/XMLSchema")]
+#[yaserde(prefix = "xs", namespaces = {
+    "xs" = "http://www.w3.org/2001/XMLSchema"
+  })]
 pub struct Group {
-  #[yaserde(attribute)]
+  #[yaserde(attribute = true)]
   pub name: Option<String>,
-  #[yaserde(attribute, rename = "ref")]
+  #[yaserde(attribute = true, rename = "ref")]
   pub reference: Option<String>,
   #[yaserde()]
   pub sequence: Option<Sequence>,
