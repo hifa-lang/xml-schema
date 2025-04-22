@@ -14,9 +14,11 @@ mod xsd;
 
 #[proc_macro_derive(XmlSchema, attributes(xml_schema))]
 pub fn hifa_xml_schema_derive(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-  let input: DeriveInput = syn::parse2(proc_macro2::TokenStream::from(input)).unwrap();
+  let input: DeriveInput =
+    syn::parse2(proc_macro2::TokenStream::from(input)).expect("Failed to parse input");
 
-  let attributes = XmlSchemaAttributes::from_derive_input(&input).unwrap();
+  let attributes =
+    XmlSchemaAttributes::from_derive_input(&input).expect("Failed to parse attributes");
 
   match expander::expand_derive(&attributes) {
     Ok(expanded) => expanded.into(),

@@ -27,6 +27,6 @@ fn complex_type_string() {
   let data = to_string(&model).unwrap();
   assert_eq!(
     data,
-    r#"<?xml version="1.0" encoding="utf-8"?><ComplexListOfElements><Annotation>Test content</Annotation><Label>Label content</Label></ComplexListOfElements>"#
+    r#"<?xml version="1.0" encoding="UTF-8"?><ComplexListOfElements><Annotation>Test content</Annotation><Label>Label content</Label></ComplexListOfElements>"#
   );
 }

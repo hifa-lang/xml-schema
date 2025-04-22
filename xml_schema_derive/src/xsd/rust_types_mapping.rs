@@ -29,7 +29,7 @@ impl RustTypesMapping {
 
   pub fn subtype_mode(context: &XsdContext, kind: &str) -> TokenStream {
     if RustTypesMapping::is_xs_string(context, kind) {
-      quote!(text)
+      quote!(text = true)
     } else {
       quote!(flatten = true)
     }
