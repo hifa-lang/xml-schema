@@ -1,13 +1,9 @@
 # hifa xml-schema
 
-[![Build Status]][travis] [![Latest Version]][crates.io] [![Coverage Status]][coveralls]
+[![Latest Version]][crates.io]
 
-[Build Status]: https://travis-ci.org/media-io/hifa-xml-schema.svg?branch=master
-[travis]: https://travis-ci.org/media-io/hifa-xml-schema
 [Latest Version]: https://img.shields.io/crates/v/hifa-xml-schema.svg
 [crates.io]: https://crates.io/crates/hifa-xml-schema
-[Coverage Status]: https://coveralls.io/repos/github/media-io/hifa-xml-schema/badge.svg?branch=master
-[coveralls]: https://coveralls.io/github/media-io/hifa-xml-schema?branch=master
 
 Generate rust code (structures and enum) from XSD
 
