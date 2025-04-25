@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Cat" type="cat" />
+  <xs:element name="Dog" type="dog" />
+
+  <xs:complexType name="Animals">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="Cat" />
+        <xs:element ref="Dog" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cat">
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="dog">
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+</xs:schema>
